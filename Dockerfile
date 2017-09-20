@@ -26,20 +26,18 @@ RUN wget -c 'http://repo1.maven.org/maven2/org/scala-sbt/sbt-launch/1.0.0/sbt-la
 	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch.jar "$@"' >> /usr/bin/sbt && \
 	chmod u+x /usr/bin/sbt
 
-# install jprofiler
-RUN wget -c http://download-keycdn.ej-technologies.com/jprofiler/jprofiler_linux_9_2.sh && bash jprofiler_linux_9_2.sh -q
-
 RUN echo "Asia/Harbin" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
 ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
+ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true
 ONBUILD COPY . /data
 
 # build and test
 ONBUILD RUN service mongod restart && service redis-server restart \ && cd /data \
-	&& sbt -Dfile.encoding=UTF-8 test \
-	&& sbt -Dfile.encoding=UTF-8 dist \
+	&& sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 test \
+	&& sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 dist \
 	&& cd /data/target/universal/ && unzip *.zip
 
 # run cron and project
