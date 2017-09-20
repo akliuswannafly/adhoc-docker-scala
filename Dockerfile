@@ -38,8 +38,8 @@ ONBUILD COPY . /data
 
 # build and test
 ONBUILD RUN service mongod restart && service redis-server restart \ && cd /data \
-	&& sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 test \
-	&& sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 dist \
+	&& sbt -Dfile.encoding=UTF-8 test \
+	&& sbt -Dfile.encoding=UTF-8 dist \
 	&& cd /data/target/universal/ && unzip *.zip
 
 # run cron and project
