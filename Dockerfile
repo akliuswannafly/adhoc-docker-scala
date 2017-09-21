@@ -29,7 +29,6 @@ RUN echo "Asia/Harbin" > /etc/timezone && dpkg-reconfigure --frontend noninterac
 
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
-ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
 ONBUILD COPY . /data
 
 # build and test
