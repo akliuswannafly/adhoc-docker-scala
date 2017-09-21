@@ -1,7 +1,6 @@
 FROM debian:7
 
 # install jdk1.8
-
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list && \
 	echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list && \
 	echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list && \
@@ -20,7 +19,7 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
 	apt-get install -y --force-yes oracle-java8-installer oracle-java8-set-default mongodb-org redis-server redis-tools unzip wget procps
 
 # install sbt
-RUN wget -c 'http://repo1.maven.org/maven2/org/scala-sbt/sbt-launch/1.0.0/sbt-launch.jar'  && \
+RUN wget -c 'http://registry.enterprise.appadhoc.com:30080/repository/scala-sbt/org/scala-sbt/sbt-launch/1.0.0/sbt-launch-1.0.0.jar'  && \
 	mv sbt-launch.jar /var && \
 	echo '#!/bin/bash' > /usr/bin/sbt && \
 	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch.jar "$@"' >> /usr/bin/sbt && \
