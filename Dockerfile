@@ -20,9 +20,9 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
 
 # install sbt
 RUN wget -c 'http://registry.enterprise.appadhoc.com:30080/repository/scala-sbt/org/scala-sbt/sbt-launch/1.0.0/sbt-launch-1.0.0.jar'  && \
-	mv sbt-launch.jar /var && \
+	mv sbt-launch-1.0.0.jar /var && \
 	echo '#!/bin/bash' > /usr/bin/sbt && \
-	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch.jar "$@"' >> /usr/bin/sbt && \
+	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch-1.0.0.jar "$@"' >> /usr/bin/sbt && \
 	chmod u+x /usr/bin/sbt
 
 RUN echo "Asia/Harbin" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
