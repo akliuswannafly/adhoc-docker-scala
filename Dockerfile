@@ -19,7 +19,7 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
 	apt-get install -y --force-yes oracle-java8-installer oracle-java8-set-default mongodb-org redis-server redis-tools unzip wget procps
 
 # install sbt
-RUN wget -c 'http://registry.enterprise.appadhoc.com:30080/repository/scala-sbt/org/scala-sbt/sbt-launch/1.0.0/sbt-launch-1.0.0.jar'  && \
+RUN wget -c 'http://repo1.maven.org/maven2/org/scala-sbt/sbt-launch/1.0.0/sbt-launch-1.0.0.jar'  && \
 	mv sbt-launch-1.0.0.jar /var && \
 	echo '#!/bin/bash' > /usr/bin/sbt && \
 	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch-1.0.0.jar "$@"' >> /usr/bin/sbt && \
@@ -30,6 +30,7 @@ RUN echo "Asia/Harbin" > /etc/timezone && dpkg-reconfigure --frontend noninterac
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
 ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
+ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true
 ONBUILD COPY . /data
 
 # build and test
