@@ -25,6 +25,9 @@ RUN wget -c 'http://repo1.maven.org/maven2/org/scala-sbt/sbt-launch/1.0.0/sbt-la
 	echo 'java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -jar /var/sbt-launch-1.0.0.jar "$@"' >> /usr/bin/sbt && \
 	chmod u+x /usr/bin/sbt
 
+# install jprofiler
+RUN wget -c http://download-keycdn.ej-technologies.com/jprofiler/jprofiler_linux_9_2.sh && bash jprofiler_linux_9_2.sh -q
+
 RUN echo "Asia/Harbin" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
 ONBUILD COPY ./project /data/project
