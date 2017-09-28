@@ -2,6 +2,8 @@ FROM java:8-jdk
 
 RUN ln -sf /usr/share/zoneinfo/posix/Asia/Harbin /etc/localtime
 
+ONBUILD RUN mkdir data
+
 ONBUILD COPY ./target/universal/*.zip /data
 
 ONBUILD RUN cd /data && unzip *.zip && \
