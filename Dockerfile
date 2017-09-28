@@ -21,12 +21,12 @@ ONBUILD COPY /target/universal/*.zip /data
 ONBUILD RUN cd /data && unzip *.zip
 
 # run cron and project
-ONBUILD RUN cd /data && export proj_name=`sbt settings name | tail -1 | cut -d' ' -f2 |tr -dc [:print:] | sed 's/\[0m//g'` && \
+ONBUILD RUN cd /data && export proj_name=`pwd | awk -F '/' '{print $NF}'` && \
 	mkdir -p /release/${proj_name} && mv /data/${proj_name}* /release && \
 	cd /release/${proj_name}*/bin && \
 	ln -s `pwd`/$proj_name /entrypoint
 
 # cleanup
-# ONBUILD RUN rm -r /data
+ONBUILD RUN rm -r /data
 
 ONBUILD CMD ["/entrypoint", "-Dconfig.resource=prod.conf", "-Dfile.encoding=UTF8"]
