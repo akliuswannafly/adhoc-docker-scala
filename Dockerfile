@@ -1,4 +1,4 @@
-FROM adhocrepo/debian-oraclejdk8
+FROM adhocrepo/debian-oraclejdk8:v0.0.1
 
 ONBUILD COPY ./target/universal/*.zip /data/
 
