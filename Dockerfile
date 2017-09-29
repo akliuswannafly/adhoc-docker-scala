@@ -1,6 +1,4 @@
-FROM java:8-jdk
-
-RUN ln -sf /usr/share/zoneinfo/posix/Asia/Harbin /etc/localtime
+FROM adhocrepo/debian-oraclejdk8
 
 ONBUILD COPY ./target/universal/*.zip /data/
 
