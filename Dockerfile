@@ -1,8 +1,10 @@
-FROM adhocrepo/debian-oraclejdk8:v0.0.1
+FROM adhocrepo/debian-oraclejdk8
 
-ONBUILD COPY ./target/universal/*.zip /data/
-
+ONBUILD COPY . /data
 ONBUILD RUN cd /data \
+    && sbt -Dfile.encoding=UTF-8 test \
+    && sbt -Dfile.encoding=UTF-8 dist \
+    && cd /data/target/universal/ \
     && unzip *.zip \
     && rm *.zip \
     && export proj_name=`ls` \
