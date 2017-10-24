@@ -1,7 +1,9 @@
 FROM adhocrepo/debian-oraclejdk8
 
 ONBUILD COPY . /data
-ONBUILD RUN cd /data \
+ONBUILD RUN service mongod restart \
+    && service redis-server restart \
+    && cd /data \
     && sbt -Dfile.encoding=UTF-8 test \
     && sbt -Dfile.encoding=UTF-8 dist \
     && cd /data/target/universal/ \
