@@ -9,8 +9,8 @@ ONBUILD RUN service mongod restart \
     && cd /data/target/universal/ \
     && unzip *.zip \
     && rm *.zip \
-    && export proj_name=`ls` \
-    && cd `ls`/bin \
-    && ln -s `pwd`/`ls | sed -n '1p'` /entrypoint
+    && cd /data \
+    && export proj_name=`sbt settings name | tail -1 | cut -d' ' -f2 | tr -dc [:print:] | sed 's/\[0m//g'` \
+    && ln -s /data/target/universal/${proj_name}*/bin/$proj_name /entrypoint
 
 ONBUILD CMD ["/entrypoint", "-Dconfig.resource=prod.conf", "-Dfile.encoding=UTF8"]
