@@ -1,4 +1,4 @@
-FROM adhocrepo/debian-oraclejdk8
+FROM adhocrepo/linux-openjdk8-slim:v0.0.1
 
 RUN apt-get install locales \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
