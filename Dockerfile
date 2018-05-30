@@ -1,5 +1,12 @@
 FROM adhocrepo/linux-openjdk8-slim:v2.0.0
 
+RUN apt-get install locales \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && locale-gen en_US.UTF-8
+ENV LC_ALL="en_US.UTF-8"
+ENV LANG="en_US.UTF-8"
+ENV LANGUAGE="en_US:en"
+
 ONBUILD COPY . /data
 ONBUILD RUN service mongodb restart \
     && service redis-server restart \
