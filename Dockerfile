@@ -7,12 +7,17 @@ ENV LC_ALL="en_US.UTF-8"
 ENV LANG="en_US.UTF-8"
 ENV LANGUAGE="en_US:en"
 
+ONBUILD COPY ./project /data/project
+ONBUILD COPY ./build.sbt /data/build.sbt
+ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
+ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true
 ONBUILD COPY . /data
+
 ONBUILD RUN service mongodb restart \
     && service redis-server restart \
     && cd /data \
-    && sbt -Dfile.encoding=UTF-8 test \
-    && sbt -Dfile.encoding=UTF-8 dist \
+    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 test \
+    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 dist \
     && cd /data/target/universal/ \
     && unzip *.zip \
     && rm *.zip \
