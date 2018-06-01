@@ -6,6 +6,10 @@ RUN apt-get install locales \
 ENV LC_ALL="en_US.UTF-8"
 ENV LANG="en_US.UTF-8"
 ENV LANGUAGE="en_US:en"
+ENV TZ=Asia/Harbin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
+    && dpkg-reconfigure --frontend noninteractive tzdata
 
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
@@ -16,8 +20,8 @@ ONBUILD COPY . /data
 ONBUILD RUN service mongodb restart \
     && service redis-server restart \
     && cd /data \
-    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 test \
-    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 dist \
+    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin test \
+    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin dist \
     && cd /data/target/universal/ \
     && unzip *.zip \
     && rm *.zip \
@@ -30,4 +34,4 @@ ONBUILD RUN service mongodb restart \
 
 ONBUILD RUN rm -r /data
 
-ONBUILD CMD ["/entrypoint", "-Dconfig.resource=prod.conf", "-Dfile.encoding=UTF8"]
+ONBUILD CMD ["/entrypoint", "-Dconfig.resource=prod.conf", "-Dfile.encoding=UTF8", "-Duser.timezone=Asia/Harbin"]
