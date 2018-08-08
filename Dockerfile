@@ -32,6 +32,4 @@ ONBUILD RUN service mongodb restart \
     && cd /release/${proj_name}*/bin \
     && ln -s `pwd`/$proj_name /entrypoint
 
-ONBUILD RUN rm -r /data
-
 ONBUILD CMD ["/entrypoint", "-Dconfig.resource=prod.conf", "-Dfile.encoding=UTF8", "-Duser.timezone=Asia/Harbin"]
