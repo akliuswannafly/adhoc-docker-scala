@@ -14,14 +14,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
 ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
-ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true
+ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true -Dsbt.repository.secure=false
 ONBUILD COPY . /data
 
 ONBUILD RUN service mongodb restart \
     && service redis-server restart \
     && cd /data \
-    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin test \
-    && sbt -Dsbt.override.build.repos=true -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin dist \
+    && sbt -Dsbt.override.build.repos=true -Dsbt.repository.secure=false -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin test \
+    && sbt -Dsbt.override.build.repos=true -Dsbt.repository.secure=false -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Harbin dist \
     && cd /data/target/universal/ \
     && unzip *.zip \
     && rm *.zip \
