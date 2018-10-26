@@ -1,4 +1,4 @@
-FROM adhocrepo/linux-openjdk8-slim:v2.0.0
+FROM registry-pub.appadhoc.com:30443/linux-openjdk8-slim:v2.1.0
 
 RUN apt-get install locales \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
@@ -13,7 +13,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 
 ONBUILD COPY ./project /data/project
 ONBUILD COPY ./build.sbt /data/build.sbt
-ONBUILD COPY ./script/sbt-repositories /root/.sbt/repositories
 ONBUILD RUN cd /data && sbt update -Dsbt.override.build.repos=true -Dsbt.repository.secure=false
 ONBUILD COPY . /data
 
